@@ -9,22 +9,26 @@ export default function CombinedPage() {
       {/* SECTION 1: HOME (Hero Banner) */}
       <div className="min-h-screen bg-gradient-to-r from-black via-blue-900 to-blue-800 text-white py-12 px-4">
         <div className="flex flex-col md:flex-row">
-          <div className="md:w-1/2 mb-10 md:mb-0 pt-16 pr-4 md:pr-8">
-            <p className="text-3xl md:text-4xl font-bold mb-2 text-justify">GRADE 12</p>
-            <p 
-              className="text-4xl md:text-5xl font-normal mb-4 italic text-justify"
-              style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
-            >
-              Mathematics
-            </p>
-            <p className="text-2xl md:text-3xl font-bold mb-2 text-justify">Monthly Subscription</p>
-            <p className="text-xl md:text-2xl font-bold text-yellow-300 mb-1 text-justify">15% OFF</p>
-            <p className="text-lg font-bold mb-6 text-justify">valid only for February</p>
-            <p className="text-lg md:text-xl font-bold mb-4 leading-relaxed text-justify">
-              Mathematics is a language that requires understanding the fundamentals & the underlying basics of all its topics - post psychological transformation
-            </p>
-            <p className="text-xl md:text-2xl font-bold text-justify shadow-md border-b-2 border-white">Making education fashionable</p>
-          </div>
+          <div className="flex flex-col md:flex-row">
+  <div className="md:w-1/2 mb-10 md:mb-0 pt-16 pr-4 md:pr-8 text-left pl-17">
+  <p className="text-4xl md:text-5xl font-bold mb-3">GRADE 12</p>
+  <p 
+    className="text-5xl md:text-6xl font-normal mb-5 italic"
+    style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+  >
+    Mathematics
+  </p>
+  <p className="text-3xl md:text-4xl font-bold mb-3">Monthly Subscription</p>
+  <p className="mb-6">
+    <span className="text-3xl md:text-4xl font-bold">15% OFF</span>{' '}
+    <span className="text-xl md:text-1xl">valid only for February</span>
+  </p>
+  <p className="text-xl md:text-2xl mb-5 leading-relaxed">
+    Mathematics is a language that requires understanding the fundamentals & the underlying basics of all its topics - post psychological transformation
+  </p>
+  <p className="text-2xl md:text-3xl font-bold shadow-md border-b-2 border-white">Making education fashionable</p>
+</div>
+</div>
           <div className="md:w-1/2 flex justify-end items-start mt-8 md:mt-10">
             <img
               src={LOGO}
@@ -37,7 +41,7 @@ export default function CombinedPage() {
 
       {/* SECTION 2: ABOUT MISSION */}
       <div className="min-h-screen bg-white text-gray-800 py-12 px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="md:w-1/2 mb-10 md:mb-0 pt-16 pr-4 md:pr-8 text-left pl-17">
           <h1 className="text-3xl md:text-4xl font-bold mb-1">ABOUT</h1>
           <h2 className="text-2xl md:text-3xl font-semibold mb-6">Mission</h2>
           <p className="text-lg leading-relaxed mb-6">
@@ -62,7 +66,7 @@ export default function CombinedPage() {
       {/* SECTION 3: ABOUT FOUNDER */}
       <div className="min-h-screen bg-gradient-to-r from-black via-blue-900 to-blue-800 text-white py-12 px-4">
         <div className="flex flex-col md:flex-row gap-8 mt-16">
-          <div className="md:w-1/2 pr-4">
+          <div className="md:w-1/2 mb-10 md:mb-0 pt-16 pr-4 md:pr-8 text-left pl-17">
             <h1 className="text-3xl md:text-4xl font-bold mb-1 text-justify">ABOUT</h1>
             <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-justify">Founder</h2>
             <p className="text-lg leading-relaxed mb-6 text-justify">

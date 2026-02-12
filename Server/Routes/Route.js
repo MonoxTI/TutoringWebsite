@@ -2,8 +2,9 @@ import express from "express";
 import { createAppointment } from '../Controller/Appointment.js';
 import { Login } from '../Controller/Login.js';
 import { Register } from '../Controller/Register.js';
-import { getAppointmentDetails } from '../Controller/DetailAppointment.js';
+import { getAppointmentDetails , updatePaymentDetails } from '../Controller/DetailAppointment.js';
 import { getAllAppointments } from '../Controller/AllAppointments.js';
+//import { updatePaymentDetails } from '../Controller/DetailAppointment.js';
 
 const router = express.Router();
 
@@ -23,7 +24,8 @@ router.post('/register', (req, res, next) => {
 });
 
 router.post('/appointment', createAppointment);
-router.get('/getAppointments', getAppointmentDetails);
+router.post('/getAppointments', getAppointmentDetails);
+router.post('/updatePayment', updatePaymentDetails);
 router.get('/Allappointments', getAllAppointments);
 
 export default router;
