@@ -38,9 +38,7 @@ const AppointmentSchema = new Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, lowercase: true, trim: true },
   phoneNumber: { type: String, required: true },
-  packageName: { type: String, required: true },
-  date: { type: Date, required: true },
-  tutor: { type: String, required: true }
+  chapters: { type: String, required: true },
 }, { timestamps: true });
 
 

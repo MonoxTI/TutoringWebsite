@@ -240,9 +240,8 @@ export default function DetailAppointment() {
                 <p><span className="font-medium">Student:</span> {data.appointment.fullName}</p>
                 <p><span className="font-medium">Email:</span> {data.appointment.email}</p>
                 <p><span className="font-medium">Phone:</span> {data.appointment.phoneNumber}</p>
-                <p><span className="font-medium">Package:</span> {data.appointment.packageName}</p>
-                <p><span className="font-medium">Date:</span> {data.appointment.date}</p>
-                <p><span className="font-medium">Tutor:</span> {data.appointment.tutor || "Not assigned"}</p>
+                <p><span className="font-medium">Chapters:</span> {data.appointment.chapters}</p>
+                
               </div>
             </div>
 

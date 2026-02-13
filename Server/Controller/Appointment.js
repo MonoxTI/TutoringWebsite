@@ -7,13 +7,11 @@ export const createAppointment = async (req, res) => {
     fullName,
     email,
     phoneNumber,
-    packageName,
-    date: appointmentDate,
-    tutor
+    chapters
   } = req.body;
 
   // Validate required fields
-  if (!fullName?.trim() || !email?.trim() || !phoneNumber || !packageName?.trim() || !appointmentDate || !tutor?.trim()) {
+  if (!fullName?.trim() || !email?.trim() || !phoneNumber || !chapters?.trim()) {
     return res.status(400).json({ success: false, message: "All fields are required" });
   }
 
@@ -28,21 +26,12 @@ export const createAppointment = async (req, res) => {
     return res.status(400).json({ success: false, message: "Invalid phone number" });
   }
 
-  // Validate date
-  const parsedDate = new Date(appointmentDate);
-  if (isNaN(parsedDate.getTime())) return res.status(400).json({ success: false, message: "Invalid date format" });
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  if (parsedDate < today) return res.status(400).json({ success: false, message: "Appointment date cannot be in the past" });
-
   try {
     const newAppointment = new AppointmentModel({
       fullName: fullName.trim(),
       email: email.trim().toLowerCase(),
       phoneNumber: phoneNumberClean,
-      packageName: packageName.trim(),
-      date: parsedDate,
-      tutor: tutor.trim(),
+      chapters: chapters.trim(),
     });
 
     const savedAppointment = await newAppointment.save();
@@ -55,9 +44,7 @@ export const createAppointment = async (req, res) => {
         fullName: savedAppointment.fullName,
         email: savedAppointment.email,
         phoneNumber: savedAppointment.phoneNumber,
-        packageName: savedAppointment.packageName,
-        date: savedAppointment.date.toISOString().split("T")[0],
-        tutor: savedAppointment.tutor,
+        chapters: savedAppointment.chapters,
       },
     });
   } catch (error) {

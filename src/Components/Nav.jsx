@@ -23,7 +23,7 @@ export default function Navbar() {
 
         {/* Navigation Links - RIGHT */}
         <div className="flex flex-wrap justify-center md:justify-end gap-2 md:gap-4 relative">
-          {/* About Dropdown */}
+          {/* About Dropdown 
           <div
             className="relative"
             onMouseEnter={() => setIsAboutOpen(true)}
@@ -38,7 +38,7 @@ export default function Navbar() {
               About
             </button>
 
-            {/* Dropdown Menu */}
+            
             {isAboutOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-blue-800 rounded-lg shadow-lg z-10 py-2">
                 <Link
@@ -58,6 +58,7 @@ export default function Navbar() {
               </div>
             )}
           </div>
+          */}
 
           <Link to="/services">
             <button className="px-4 py-2 rounded-lg hover:bg-blue-800/70 transition-colors duration-200 font-medium whitespace-nowrap">
@@ -69,11 +70,13 @@ export default function Navbar() {
               Bootcamp
             </button>
           </Link>
+          {/*}
           <Link to="/alumni">
             <button className="px-4 py-2 rounded-lg hover:bg-blue-800/70 transition-colors duration-200 font-medium whitespace-nowrap">
               Career
             </button>
           </Link>
+          */}
           <Link to="/contact">
             <button className="px-4 py-2 rounded-lg hover:bg-blue-800/70 transition-colors duration-200 font-medium whitespace-nowrap">
               Contact

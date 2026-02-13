@@ -57,8 +57,7 @@ export default function AllAppointments() {
                 <p><strong>Name:</strong> {apt.fullName}</p>
                 <p><strong>Email:</strong> {apt.email}</p>
                 <p><strong>Package:</strong> {apt.packageName}</p>
-                <p><strong>Date:</strong> {apt.date}</p>
-                <p><strong>Tutor:</strong> {apt.tutor}</p>
+                <p><strong></strong></p>
 
                 
               </div>
