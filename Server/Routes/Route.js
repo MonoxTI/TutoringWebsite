@@ -4,6 +4,7 @@ import { Login } from '../Controller/Login.js';
 import { Register } from '../Controller/Register.js';
 import { getAppointmentDetails , updatePaymentDetails } from '../Controller/DetailAppointment.js';
 import { getAllAppointments } from '../Controller/AllAppointments.js';
+import { deleteAppointment } from '../Controller/DeleteAppointment.js';
 //import { updatePaymentDetails } from '../Controller/DetailAppointment.js';
 
 const router = express.Router();
@@ -27,5 +28,6 @@ router.post('/appointment', createAppointment);
 router.post('/getAppointments', getAppointmentDetails);
 router.post('/updatePayment', updatePaymentDetails);
 router.get('/Allappointments', getAllAppointments);
+router.delete('/deleteAppointments', deleteAppointment);
 
 export default router;
