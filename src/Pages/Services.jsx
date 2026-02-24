@@ -1,4 +1,4 @@
-import LOGO from "../Assets/LOGO.png";
+import LOGO from "../assets/LOGO.png";
 
 export default function Services() {
   return (

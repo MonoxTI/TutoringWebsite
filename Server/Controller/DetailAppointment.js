@@ -1,5 +1,9 @@
 import { AppointmentModel, AppointmentDetailsModel } from "../Models/DB.js";
 
+// FIXED: Use lowercase enum values that match your schema
+import { sendEmail } from "../Config/Email.js";
+
+
 export const getAppointmentDetails = async (req, res) => {
   const { fullName } = req.body;
 
@@ -61,9 +65,6 @@ export const getAppointmentDetails = async (req, res) => {
     });
   }
 };
-
-// FIXED: Use lowercase enum values that match your schema
-import sendEmail from "../Config/Email.js";
 
 // FIXED: Use lowercase enum values that match your schema
 export const updatePaymentDetails = async (req, res) => {
