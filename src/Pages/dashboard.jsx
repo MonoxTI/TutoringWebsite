@@ -17,7 +17,7 @@ export default function Dashboard() {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/Allappointments", {
+      const res = await fetch("https://tutoringwebsite-sm0u.onrender.com/Allappointments", {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
@@ -54,7 +54,7 @@ export default function Dashboard() {
   setError("");
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:5000/api/deleteAppointments", {
+    const res = await fetch("https://tutoringwebsite-sm0u.onrender.com/deleteAppointments", {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`,

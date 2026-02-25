@@ -9,7 +9,7 @@ export default function AllAppointments() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/Allappointments");
+        const res = await fetch("https://tutoringwebsite-sm0u.onrender.com/Allappointments");
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.message);
