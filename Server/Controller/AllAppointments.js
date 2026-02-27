@@ -1,9 +1,9 @@
-import { AppointmentModel } from "../Models/DB.js";
+import {AppointmentModel} from "../Models/DB.js";
 
+// ✅ CORRECTED getAllAppointments controller
 export const getAllAppointments = async (req, res) => {
   try {
-    // Get all appointments, sorted by date descending
-    const appointments = await AppointmentModel.find().sort({ date: -1 });
+    const appointments = await AppointmentModel.find().sort({ createdAt: -1 });
 
     return res.status(200).json({
       success: true,
@@ -15,9 +15,7 @@ export const getAllAppointments = async (req, res) => {
           fullName: apt.fullName,
           email: apt.email,
           phoneNumber: apt.phoneNumber,
-          packageName: apt.packageName,
-          date: apt.date?.toISOString().slice(0, 10) || null,
-          tutor: apt.tutor,
+          chapters: apt.chapters,  // 👈 ADD THIS LINE - THIS IS THE FIX!
           createdAt: apt.createdAt || null,
           updatedAt: apt.updatedAt || null,
         })),

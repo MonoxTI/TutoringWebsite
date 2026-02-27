@@ -49,7 +49,7 @@ export default function Register() {
     setSuccess("");
 
     try {
-      const res = await fetch("https://tutoringwebsite-sm0u.onrender.com/register", {
+      const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)

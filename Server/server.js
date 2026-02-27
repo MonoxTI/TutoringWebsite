@@ -21,7 +21,8 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     'http://localhost:5173',           // local dev
-    'https://jazzy-baklava-993a51.netlify.app'  // production
+    'https://jazzy-baklava-993a51.netlify.app',  // production
+    'https://assmbledtutor.netlify.app'
   ]
 }));
 

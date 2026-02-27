@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Contact() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-16 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-16 px-4 pt-12 md:pt-25">
       <div className="max-w-2xl mx-auto text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-10">
           Contact Us

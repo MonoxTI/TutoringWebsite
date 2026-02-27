@@ -43,6 +43,7 @@ export const getAppointmentDetails = async (req, res) => {
           packageName: appointment.packageName,
           date: appointment.date?.toISOString().split("T")[0],
           tutor: appointment.tutor,
+          chapters: appointment.chapters || "", // <--- include chapters
           createdAt: appointment.createdAt
         },
         paymentDetails: paymentDetails

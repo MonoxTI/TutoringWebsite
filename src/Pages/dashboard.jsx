@@ -17,7 +17,7 @@ export default function Dashboard() {
         return;
       }
 
-      const res = await fetch("https://tutoringwebsite-sm0u.onrender.com/Allappointments", {
+      const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/Allappointments", {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
@@ -54,7 +54,7 @@ export default function Dashboard() {
   setError("");
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch("https://tutoringwebsite-sm0u.onrender.com/deleteAppointments", {
+    const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/deleteAppointments", {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -77,7 +77,7 @@ export default function Dashboard() {
   const handleViewDetails = () => navigate("/detail");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 md:p-8 pt-12 md:pt-25">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Dashboard</h1>
         <p className="text-gray-600 mb-8">Welcome back! Here's your overview.</p>

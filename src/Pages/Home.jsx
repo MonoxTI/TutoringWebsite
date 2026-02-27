@@ -11,19 +11,19 @@ export default function CombinedPage() {
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-col md:flex-row">
   <div className="md:w-1/2 mb-10 md:mb-0 pt-16 pr-4 md:pr-8 text-left pl-17">
-  <p className="text-4xl md:text-5xl font-bold mb-3">GRADE 12</p>
+  <p className="text-4xl md:text-6xl font-bold mb-3">GRADE 12</p>
   <p 
-    className="text-5xl md:text-6xl font-normal mb-5 italic"
+    className="text-5xl md:text-7xl font-normal mb-5 italic"
     style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
   >
     Mathematics
   </p>
-  <p className="text-3xl md:text-4xl font-bold mb-3">Monthly Subscription</p>
+  <p className="text-3xl md:text-5xl font-bold mb-3">Monthly Subscription</p>
   <p className="mb-6">
-    <span className="text-3xl md:text-4xl font-bold">15% OFF</span>{' '}
-    <span className="text-xl md:text-1xl">valid only for February</span>
+    <span className="text-3xl md:text-5xl font-bold">15% OFF</span>{' '}
+    <span className="text-xl md:text-1xl">valid only for March</span>
   </p>
-  <p className="text-xl md:text-2xl mb-5 leading-relaxed">
+  <p className="text-xl md:text-3xl mb-5 leading-relaxed">
     Mathematics is a language that requires understanding the fundamentals & the underlying basics of all its topics - post psychological transformation
   </p>
   <p className="text-2xl md:text-3xl font-bold shadow-md border-b-2 border-white">Making education fashionable</p>

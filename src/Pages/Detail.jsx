@@ -15,6 +15,19 @@ export default function DetailAppointment() {
   const [updateLoading, setUpdateLoading] = useState(false);
   const [updateMessage, setUpdateMessage] = useState(null);
 
+  // utility to break the stored string into paper + list of chapters
+  const parseChapters = (chaptersStr) => {
+    if (!chaptersStr) return { paper: "", chapters: [] };
+    const parts = chaptersStr.split(" - ");
+    const paper = parts[0] || "";
+    const chaptersPart = parts[1] || "";
+    const chaptersArr = chaptersPart
+      .split(",")
+      .map((c) => c.trim())
+      .filter(Boolean);
+    return { paper, chapters: chaptersArr };
+  };
+
   const navigate = useNavigate();
 
   // Fetch appointment names for dropdown
@@ -22,7 +35,7 @@ export default function DetailAppointment() {
     const fetchOptions = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("https://tutoringwebsite-sm0u.onrender.com/Allappointments", {
+        const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/Allappointments", {
           headers: {
             "Content-Type": "application/json",
             ...(token && { Authorization: `Bearer ${token}` }),
@@ -74,7 +87,7 @@ export default function DetailAppointment() {
       setLoading(true);
       const token = localStorage.getItem("token");
 
-      const res = await fetch("https://tutoringwebsite-sm0u.onrender.com/getAppointments", {
+      const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/getAppointments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,6 +103,7 @@ export default function DetailAppointment() {
       }
 
       setData(result.data);
+      console.log("detail response data", result.data);
     } catch (err) {
       setError(err.message || "An unexpected error occurred");
     } finally {
@@ -130,7 +144,7 @@ export default function DetailAppointment() {
         Note: note.trim() || "",
       };
 
-      const res = await fetch("https://tutoringwebsite-sm0u.onrender.com/updatePayment", {
+      const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/updatePayment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -240,7 +254,30 @@ export default function DetailAppointment() {
                 <p><span className="font-medium">Student:</span> {data.appointment.fullName}</p>
                 <p><span className="font-medium">Email:</span> {data.appointment.email}</p>
                 <p><span className="font-medium">Phone:</span> {data.appointment.phoneNumber}</p>
-                <p><span className="font-medium">Chapters:</span> {data.appointment.chapters}</p>
+                {/* display chapters nicely, splitting paper and comma list */}
+                {(() => {
+                  const { paper, chapters } = parseChapters(data.appointment.chapters);
+                  return (
+                    <>
+                      {paper && (
+                        <p><span className="font-medium">Paper:</span> {paper}</p>
+                      )}
+                      {chapters.length > 0 ? (
+                        <ul className="list-disc list-inside text-gray-700">
+                          {chapters.map((ch, i) => (
+                            <li key={i}>{ch}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-gray-500 italic">
+                          {data.appointment.chapters
+                            ? data.appointment.chapters
+                            : "No chapters specified"}
+                        </p>
+                      )}
+                    </>
+                  );
+                })()}
                 
               </div>
             </div>
