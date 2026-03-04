@@ -50,6 +50,7 @@ export const Register = async (req, res) => {
       username,
       email,
       password,
+      role: "pending", // New users start as pending
     });
 
     // Respond without password
@@ -59,6 +60,7 @@ export const Register = async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {

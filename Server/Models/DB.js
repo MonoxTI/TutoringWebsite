@@ -16,6 +16,11 @@ const UserSchema = new Schema({
 }
 ,
   password: { type: String, required: true, select: false },
+  role: { 
+    type: String, 
+    enum: ["pending", "user", "admin"], 
+    default: "pending"          // every new registration starts as pending
+  }
 });
 
 // Hash password before save
@@ -30,6 +35,10 @@ UserSchema.pre("save", async function () {
 UserSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
+
+// Convenience helpers
+UserSchema.methods.isAdmin = function () { return this.role === "admin"; };
+UserSchema.methods.hasAccess = function () { return ["user", "admin"].includes(this.role); };
 
 /* ─── Appointment Schema ────────────────────────────────── */
 

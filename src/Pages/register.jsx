@@ -7,6 +7,7 @@ export default function Register() {
     username: "",
     email: "",
     password: ""
+    // ✅ REMOVED: role field - backend handles this securely
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -16,7 +17,7 @@ export default function Register() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    if (error) setError(""); // Clear error on new input
+    if (error) setError("");
   };
 
   const validateForm = () => {
@@ -49,7 +50,8 @@ export default function Register() {
     setSuccess("");
 
     try {
-      const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/register", {
+      // ✅ FIXED: Removed trailing spaces in URL
+      const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -61,8 +63,14 @@ export default function Register() {
         throw new Error(data.message || "Registration failed");
       }
 
-      setSuccess("Account created successfully!");
-      setTimeout(() => navigate("/dashboard"), 2000);
+      // ✅ SUCCESS: Show approval message
+      setSuccess("Account created! Please wait for admin approval.");
+      
+      // ✅ FIXED: Redirect to /pending (matches your App.jsx route)
+      setTimeout(() => navigate("/pending", { 
+        state: { email: formData.email } 
+      }), 2500);
+      
     } catch (err) {
       console.error("Registration error:", err);
       setError(err.message);

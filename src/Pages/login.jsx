@@ -14,42 +14,60 @@ export default function Login() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    if (error) setError(""); // Clear error on new input
+    if (error) setError("");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  // In Login.jsx - handleSubmit function
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    try {
-      const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
+  try {
+    const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    });
 
-      const data = await res.json();
+    const data = await res.json();
+    
+    // 🔍 ADD THIS DEBUG LOG
+    console.log("📦 Login response:", data);
+    console.log("👤 User role from backend:", data.user?.role);
 
-      if (!res.ok) {
-        throw new Error(data.message || "Invalid credentials");
-      }
-
-      // Save token to localStorage
-      localStorage.setItem("token", data.token);
-      
-      // Optional: Save user info
-      localStorage.setItem("user", JSON.stringify(data.user));
-      
-      // Redirect to dashboard/profile
-      navigate("/dashboard"); // Change to your desired route
-    } catch (err) {
-      console.error("Login error:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      throw new Error(data.message || "Invalid credentials");
     }
-  };
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    
+    // 🔍 ADD THIS DEBUG LOG
+    console.log("💾 Stored user:", JSON.parse(localStorage.getItem("user")));
+
+    // Check role and redirect
+    const userRole = data.user?.role;
+    console.log("🔄 Redirecting based on role:", userRole);
+    
+    if (userRole === "pending") {
+      navigate("/pending", { state: { email: formData.email } });
+    } else if (userRole === "admin") {
+      navigate("/admin");
+    } else if (userRole === "user") {
+      navigate("/dashboard");
+    } else {
+      // Fallback if role is missing
+      navigate("/dashboard");
+    }
+    
+  } catch (err) {
+    console.error("Login error:", err);
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white px-4">

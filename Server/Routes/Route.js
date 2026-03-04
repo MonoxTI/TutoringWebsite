@@ -5,7 +5,9 @@ import { Register } from '../Controller/Register.js';
 import { getAppointmentDetails , updatePaymentDetails } from '../Controller/DetailAppointment.js';
 import { getAllAppointments } from '../Controller/AllAppointments.js';
 import { deleteAppointment } from '../Controller/DeleteAppointment.js';
-//import { updatePaymentDetails } from '../Controller/DetailAppointment.js';
+import { authenticate, requireAdmin, requireAccess } from "../Middleware/JWT.js";
+import { getPendingUsers, approveUser, revokeUser } from "../Controller/admin.js";
+
 
 const router = express.Router();
 
@@ -14,20 +16,23 @@ console.log(' Routes file loaded');
 console.log('Register function:', typeof Register);
 console.log('Login function:', typeof Login);
 
-router.post('/login', (req, res, next) => {
-  console.log(' Login route hit');
-  Login(req, res, next);
-});
+router.post('/login', Login);
 
-router.post('/register', (req, res, next) => {
-  console.log(' Register route hit');
-  Register(req, res, next);
-});
+router.post('/register', Register);
 
 router.post('/appointment', createAppointment);
-router.post('/getAppointments', getAppointmentDetails);
-router.post('/updatePayment', updatePaymentDetails);
-router.get('/Allappointments', getAllAppointments);
-router.delete('/deleteAppointments', deleteAppointment);
+router.post('/getAppointments', authenticate, requireAccess, getAppointmentDetails);
+router.post('/updatePayment', authenticate, requireAccess, updatePaymentDetails);
+router.get('/Allappointments', authenticate, requireAccess, getAllAppointments);
+router.delete('/deleteAppointments', authenticate, requireAccess, deleteAppointment);
+
+// GET /admin/users/pending — list users awaiting approval
+router.get("/users/pending", authenticate, requireAdmin,getPendingUsers);
+
+// PATCH /admin/users/:id/approve — grant dashboard access
+router.patch("/users/:id/approve", authenticate, requireAdmin, approveUser);
+
+// PATCH /admin/users/:id/revoke — remove access
+router.patch("/users/:id/revoke", authenticate, requireAdmin, revokeUser);
 
 export default router;

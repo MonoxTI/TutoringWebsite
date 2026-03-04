@@ -27,7 +27,7 @@ export default function AllAppointments() {
       try {
         // ✅ Fixed: Removed trailing spaces from URL
         const res = await fetch(
-          "https://tutoringwebsite-hzbg.onrender.com/api/Allappointments",
+          "https://tutoringwebsite-xjj4.onrender.com/api/Allappointments",
           { signal: abortController.signal }
         );
         const data = await res.json();

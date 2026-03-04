@@ -7,6 +7,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false); // 👈 NEW: Track admin status
   const navigate = useNavigate();
 
   const fetchAppointmentsCount = async () => {
@@ -17,7 +18,8 @@ export default function Dashboard() {
         return;
       }
 
-      const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/Allappointments", {
+      // ✅ FIXED: Removed trailing spaces in URL
+      const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/Allappointments", {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
@@ -27,7 +29,7 @@ export default function Dashboard() {
       if (!res.ok) throw new Error("Failed to fetch appointments");
 
       const data = await res.json();
-      setAppointmentCount(data.data.count || 0);
+      setAppointmentCount(data.data?.count || data.length || 0);
     } catch (err) {
       console.error("Fetch error:", err);
       setError("Unable to load dashboard data");
@@ -37,44 +39,54 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    // 👈 NEW: Check if current user is admin
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      setIsAdmin(user.role === "admin");
+    }
+    
     fetchAppointmentsCount();
   }, [navigate]);
 
- const handleDeleteAll = async () => {
-  const confirmed = window.confirm("Are you sure you want to delete ALL appointments? This cannot be undone.");
-  if (!confirmed) return;
+  const handleDeleteAll = async () => {
+    const confirmed = window.confirm("Are you sure you want to delete ALL appointments? This cannot be undone.");
+    if (!confirmed) return;
 
-  const userInput = window.prompt('Please type "Delete-all-appointments" to confirm deletion:');
-  if (userInput !== "Delete-all-appointments") {
-    alert("Incorrect confirmation text. Deletion cancelled.");
-    return;
-  }
+    const userInput = window.prompt('Please type "Delete-all-appointments" to confirm deletion:');
+    if (userInput !== "Delete-all-appointments") {
+      alert("Incorrect confirmation text. Deletion cancelled.");
+      return;
+    }
 
-  setDeleting(true);
-  setError("");
-  try {
-    const token = localStorage.getItem("token");
-    const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/deleteAppointments", {
-      method: "DELETE",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
-    });
+    setDeleting(true);
+    setError("");
+    try {
+      const token = localStorage.getItem("token");
+      
+      // ✅ FIXED: Removed trailing spaces in URL
+      const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/deleteAppointments", {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
 
-    if (!res.ok) throw new Error("Failed to delete appointments");
+      if (!res.ok) throw new Error("Failed to delete appointments");
 
-    setAppointmentCount(0);
-  } catch (err) {
-    console.error("Delete error:", err);
-    setError("Failed to delete appointments. Please try again.");
-  } finally {
-    setDeleting(false);
-  }
-};
+      setAppointmentCount(0);
+    } catch (err) {
+      console.error("Delete error:", err);
+      setError("Failed to delete appointments. Please try again.");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const handleViewAll = () => navigate("/appointments");
   const handleViewDetails = () => navigate("/detail");
+  const handleGoToAdmin = () => navigate("/admin"); // 👈 NEW: Navigate to admin panel
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 md:p-8 pt-12 md:pt-25">
@@ -97,6 +109,7 @@ export default function Dashboard() {
 
         {/* Action Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* View All Appointments */}
           <button
             onClick={handleViewAll}
             className="bg-white hover:bg-blue-50 border border-blue-200 rounded-xl shadow-md p-6 text-left transition-all hover:shadow-lg"
@@ -112,6 +125,7 @@ export default function Dashboard() {
             <p className="text-gray-600">See complete list of scheduled sessions</p>
           </button>
 
+          {/* View Detailed Appointments */}
           <button
             onClick={handleViewDetails}
             className="bg-white hover:bg-blue-50 border border-blue-200 rounded-xl shadow-md p-6 text-left transition-all hover:shadow-lg"
@@ -126,6 +140,25 @@ export default function Dashboard() {
             </div>
             <p className="text-gray-600">See complete list of scheduled sessions</p>
           </button>
+
+          {/* 👑 NEW: Admin-Only Button - Only shows for admins */}
+          {isAdmin && (
+            <button
+              onClick={handleGoToAdmin}
+              className="bg-white hover:bg-red-50 border border-red-200 rounded-xl shadow-md p-6 text-left transition-all hover:shadow-lg"
+            >
+              <div className="flex items-center mb-3">
+                <div className="bg-red-100 p-3 rounded-lg mr-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-red-700">⚙️ Admin Panel</h3>
+              </div>
+              <p className="text-gray-600">Manage users, approvals, and settings</p>
+            </button>
+          )}
 
           {/* Delete All Button */}
           <button

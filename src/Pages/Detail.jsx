@@ -35,7 +35,7 @@ export default function DetailAppointment() {
     const fetchOptions = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/Allappointments", {
+        const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/Allappointments", {
           headers: {
             "Content-Type": "application/json",
             ...(token && { Authorization: `Bearer ${token}` }),
@@ -87,7 +87,7 @@ export default function DetailAppointment() {
       setLoading(true);
       const token = localStorage.getItem("token");
 
-      const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/getAppointments", {
+      const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/getAppointments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +144,7 @@ export default function DetailAppointment() {
         Note: note.trim() || "",
       };
 
-      const res = await fetch("https://tutoringwebsite-hzbg.onrender.com/api/updatePayment", {
+      const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/updatePayment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
