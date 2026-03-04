@@ -157,7 +157,7 @@ export default function Navbar() {
               {user.role === "admin" && (
                 <Link to="/admin" className="block" onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="w-full text-left px-4 py-2 rounded-lg bg-red-600 text-white font-semibold">
-                    ⚙️ Admin
+                     Admin
                   </button>
                 </Link>
               )}
@@ -175,7 +175,7 @@ export default function Navbar() {
           {user?.role === "pending" && (
             <>
               <div className="w-full text-left px-4 py-2 text-yellow-300 font-medium">
-                ⏳ Pending Approval
+                 Pending Approval
               </div>
               <button
                 onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}

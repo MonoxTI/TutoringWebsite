@@ -154,7 +154,7 @@ export default function Dashboard() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-red-700">⚙️ Admin Panel</h3>
+                <h3 className="text-xl font-semibold text-red-700"> Admin Panel</h3>
               </div>
               <p className="text-gray-600">Manage users, approvals, and settings</p>
             </button>

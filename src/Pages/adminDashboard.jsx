@@ -4,11 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
   const [pendingUsers, setPendingUsers] = useState([]);
-  const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [activeTab, setActiveTab] = useState("pending"); // "pending" | "appointments"
   const navigate = useNavigate();
 
   // 🔐 Check if user is admin on mount
@@ -16,45 +14,40 @@ export default function AdminDashboard() {
     const checkAdmin = async () => {
       const token = localStorage.getItem("token");
       const userStr = localStorage.getItem("user");
-      
+
       if (!token || !userStr) {
         navigate("/login");
         return;
       }
-      
+
       const user = JSON.parse(userStr);
       if (user.role !== "admin") {
-        navigate("/dashboard"); // Redirect non-admins
+        navigate("/dashboard");
         return;
       }
-      
+
       fetchData();
     };
-    
+
     checkAdmin();
   }, [navigate]);
 
-  // 📥 Fetch pending users & appointments
+  // 📥 Fetch pending users
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const headers = { 
+      const headers = {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}` 
+        Authorization: `Bearer ${token}`,
       };
 
-      // Fetch pending users
-      const usersRes = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/users/pending", { headers });
+      const usersRes = await fetch(
+        "https://tutoringwebsite-xjj4.onrender.com/api/users/pending",
+        { headers }
+      );
       if (usersRes.ok) {
         const usersData = await usersRes.json();
         setPendingUsers(usersData.data || []);
-      }
-
-      // Fetch all appointments (adjust endpoint as needed)
-      const apptRes = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/Allappointments", { headers });
-      if (apptRes.ok) {
-        const apptData = await apptRes.json();
-        setAppointments(apptData.data || apptData || []);
       }
     } catch (err) {
       console.error("Fetch error:", err);
@@ -67,7 +60,7 @@ export default function AdminDashboard() {
   // ✅ Approve a pending user
   const handleApprove = async (userId, username) => {
     if (!window.confirm(`Approve "${username}"? They will gain dashboard access.`)) return;
-    
+
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
@@ -76,19 +69,16 @@ export default function AdminDashboard() {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      
+
       const data = await res.json();
-      
       if (!res.ok) throw new Error(data.message || "Approval failed");
-      
+
       setSuccess(`✅ ${username} approved successfully!`);
-      // Remove from pending list
-      setPendingUsers(prev => prev.filter(u => u._id !== userId));
-      
+      setPendingUsers((prev) => prev.filter((u) => u._id !== userId));
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       setError(err.message);
@@ -99,7 +89,7 @@ export default function AdminDashboard() {
   // ❌ Revoke a user's access
   const handleRevoke = async (userId, username) => {
     if (!window.confirm(`Revoke access for "${username}"? They will return to pending status.`)) return;
-    
+
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
@@ -108,16 +98,15 @@ export default function AdminDashboard() {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      
+
       const data = await res.json();
-      
       if (!res.ok) throw new Error(data.message || "Revocation failed");
-      
-      setSuccess(`🔒 ${username} access revoked.`);
+
+      setSuccess(` ${username}'s access revoked.`);
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       setError(err.message);
@@ -125,22 +114,23 @@ export default function AdminDashboard() {
     }
   };
 
-  // 🚪 Logout function
+  // 🚪 Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
   };
 
-  // 🎨 Format date helper
+  // 🎨 Format date
   const formatDate = (dateString) => {
     if (!dateString) return "—";
     return new Date(dateString).toLocaleDateString("en-ZA", {
-      year: "numeric", month: "short", day: "numeric"
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
-  // 🔄 Loading state
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -153,186 +143,107 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* 🎯 Header */}
+    <div className="min-h-screen bg-gray-50 md:p-8 pt-12 md:pt-25">
+      {/* Header */}
       <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-            <p className="text-sm text-gray-500">Manage users and appointments</p>
+            <p className="text-sm text-gray-500">Manage user access</p>
           </div>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition"
-            >
-              🚪 Logout
-            </button>
-          </div>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition"
+          >
+            Logout
+          </button>
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition"
+          >
+            User Dashboard
+          </button>
         </div>
       </header>
 
-      {/* 📊 Stats Cards */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
-            <p className="text-sm text-gray-500">Pending Users</p>
-            <p className="text-3xl font-bold text-gray-900">{pendingUsers.length}</p>
-          </div>
-          <div className="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
-            <p className="text-sm text-gray-500">Total Appointments</p>
-            <p className="text-3xl font-bold text-gray-900">{appointments.length}</p>
-          </div>
-          <div className="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
-            <p className="text-sm text-gray-500">Active Users</p>
-            <p className="text-3xl font-bold text-gray-900">
-              {/* You could fetch this from backend */}
-              —
-            </p>
-          </div>
+      <div className="max-w-4xl mx-auto px-4 py-6">
+        {/* Stats Card */}
+        <div className="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500 mb-6 w-fit">
+          <p className="text-sm text-gray-500">Awaiting Approval</p>
+          <p className="text-3xl font-bold text-gray-900">{pendingUsers.length}</p>
         </div>
 
-        {/* 🔔 Alerts */}
+        {/* Alerts */}
         {(error || success) && (
-          <div className={`mb-6 p-4 rounded-lg text-sm font-medium ${
-            success 
-              ? "bg-green-100 text-green-800 border border-green-200" 
-              : "bg-red-100 text-red-800 border border-red-200"
-          }`}>
+          <div
+            className={`mb-6 p-4 rounded-lg text-sm font-medium ${
+              success
+                ? "bg-green-100 text-green-800 border border-green-200"
+                : "bg-red-100 text-red-800 border border-red-200"
+            }`}
+          >
             {success || error}
           </div>
         )}
 
-        {/* 🗂️ Tabs */}
-        <div className="bg-white rounded-xl shadow mb-6">
-          <div className="border-b border-gray-200">
-            <nav className="flex gap-1 p-1" aria-label="Tabs">
-              <button
-                onClick={() => setActiveTab("pending")}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
-                  activeTab === "pending"
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                }`}
-              >
-                👥 Pending Users ({pendingUsers.length})
-              </button>
-              <button
-                onClick={() => setActiveTab("appointments")}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
-                  activeTab === "appointments"
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                }`}
-              >
-                 Appointments ({appointments.length})
-              </button>
-            </nav>
+        {/* Users Table */}
+        <div className="bg-white rounded-xl shadow">
+          <div className="border-b border-gray-200 px-6 py-4">
+            <h2 className="text-base font-semibold text-gray-800">
+              👥 Pending Users ({pendingUsers.length})
+            </h2>
           </div>
 
-          {/* 📋 Tab Content */}
           <div className="p-6">
-            {/* 👥 Pending Users Tab */}
-            {activeTab === "pending" && (
-              <div>
-                {pendingUsers.length === 0 ? (
-                  <div className="text-center py-12">
-                    <div className="text-6xl mb-4">🎉</div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">
-                      All caught up!
-                    </h3>
-                    <p className="text-gray-500">No pending users waiting for approval.</p>
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                      <thead>
-                        <tr className="border-b border-gray-200">
-                          <th className="pb-3 text-sm font-medium text-gray-500">Username</th>
-                          <th className="pb-3 text-sm font-medium text-gray-500">Email</th>
-                          <th className="pb-3 text-sm font-medium text-gray-500">Registered</th>
-                          <th className="pb-3 text-sm font-medium text-gray-500 text-right">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-100">
-                        {pendingUsers.map((user) => (
-                          <tr key={user._id} className="hover:bg-gray-50">
-                            <td className="py-3 font-medium text-gray-900">{user.username}</td>
-                            <td className="py-3 text-gray-600">{user.email}</td>
-                            <td className="py-3 text-gray-500 text-sm">
-                              {formatDate(user.createdAt)}
-                            </td>
-                            <td className="py-3 text-right space-x-2">
-                              <button
-                                onClick={() => handleApprove(user._id, user.username)}
-                                className="px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition"
-                              >
-                                 Approve
-                              </button>
-                              <button
-                                onClick={() => handleRevoke(user._id, user.username)}
-                                className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition"
-                              >
-                                 Revoke
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+            {pendingUsers.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🎉</div>
+                <h3 className="text-lg font-medium text-gray-900 mb-1">All caught up!</h3>
+                <p className="text-gray-500">No pending users waiting for approval.</p>
               </div>
-            )}
-
-            {/* 📅 Appointments Tab */}
-            {activeTab === "appointments" && (
-              <div>
-                {appointments.length === 0 ? (
-                  <div className="text-center py-12">
-                    <div className="text-6xl mb-4">📭</div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">
-                      No appointments yet
-                    </h3>
-                    <p className="text-gray-500">Appointments will appear here once users book.</p>
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                      <thead>
-                        <tr className="border-b border-gray-200">
-                          <th className="pb-3 text-sm font-medium text-gray-500">Name</th>
-                          <th className="pb-3 text-sm font-medium text-gray-500">Email</th>
-                          <th className="pb-3 text-sm font-medium text-gray-500">Phone</th>
-                          <th className="pb-3 text-sm font-medium text-gray-500">Chapters</th>
-                          <th className="pb-3 text-sm font-medium text-gray-500">Booked</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-100">
-                        {appointments.map((apt) => (
-                          <tr key={apt._id} className="hover:bg-gray-50">
-                            <td className="py-3 font-medium text-gray-900">{apt.fullName}</td>
-                            <td className="py-3 text-gray-600">{apt.email}</td>
-                            <td className="py-3 text-gray-600">{apt.phoneNumber}</td>
-                            <td className="py-3 text-gray-600">{apt.chapters}</td>
-                            <td className="py-3 text-gray-500 text-sm">
-                              {formatDate(apt.createdAt)}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="pb-3 text-sm font-medium text-gray-500">Username</th>
+                      <th className="pb-3 text-sm font-medium text-gray-500">Email</th>
+                      <th className="pb-3 text-sm font-medium text-gray-500">Registered</th>
+                      <th className="pb-3 text-sm font-medium text-gray-500 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {pendingUsers.map((user) => (
+                      <tr key={user._id} className="hover:bg-gray-50">
+                        <td className="py-3 font-medium text-gray-900">{user.username}</td>
+                        <td className="py-3 text-gray-600">{user.email}</td>
+                        <td className="py-3 text-gray-500 text-sm">{formatDate(user.createdAt)}</td>
+                        <td className="py-3 text-right space-x-2">
+                          <button
+                            onClick={() => handleApprove(user._id, user.username)}
+                            className="px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition"
+                          >
+                            ✅ Approve
+                          </button>
+                          <button
+                            onClick={() => handleRevoke(user._id, user.username)}
+                            className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition"
+                          >
+                            🔒 Revoke
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>
         </div>
 
-        {/* ℹ️ Helper Note */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
-          💡 <strong>Tip:</strong> Click "Approve" to grant a user dashboard access. 
-          They'll be able to log in and book appointments immediately.
+        {/* Tip */}
+        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
+          💡 <strong>Tip:</strong> Click "Approve" to grant a user dashboard access. They'll be able to log in and book appointments immediately.
         </div>
       </div>
     </div>
