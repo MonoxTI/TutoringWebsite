@@ -151,18 +151,6 @@ export default function AdminDashboard() {
             <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
             <p className="text-sm text-gray-500">Manage user access</p>
           </div>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition"
-          >
-            Logout
-          </button>
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition"
-          >
-            User Dashboard
-          </button>
         </div>
       </header>
 

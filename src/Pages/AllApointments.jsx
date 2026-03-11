@@ -26,9 +26,15 @@ export default function AllAppointments() {
     const fetchAppointments = async () => {
       try {
         // ✅ Fixed: Removed trailing spaces from URL
+        const token = localStorage.getItem("token");
         const res = await fetch(
           "https://tutoringwebsite-xjj4.onrender.com/api/Allappointments",
-          { signal: abortController.signal }
+          { signal: abortController.signal,
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+             }  
+          }
         );
         const data = await res.json();
 
