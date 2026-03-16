@@ -4,9 +4,6 @@ import express from "express";
 import cors from "cors";
 import router from "./Routes/Route.js";
 import connectDB from "./Config/DBconnect.js";
-
-
-
 if (!process.env.MONGO_URI) {
   throw new Error("MONGODB_URI environment variable is required");
 }

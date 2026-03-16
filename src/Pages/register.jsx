@@ -51,7 +51,7 @@ export default function Register() {
 
     try {
       // ✅ FIXED: Removed trailing spaces in URL
-      const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/register", {
+      const res = await fetch(`http://localhost:5000/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)

@@ -66,7 +66,7 @@ export default function Bookings() {
     };
 
     try {
-      const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/appointment", {
+      const res = await fetch(`http://localhost:5000/api/appointment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

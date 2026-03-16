@@ -1,8 +1,6 @@
 // Login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import dotenv from "dotenv";
-dotenv.config();
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -26,7 +24,7 @@ const handleSubmit = async (e) => {
   setError("");
 
   try {
-    const res = await fetch(`${process.env.API_URL}/api/login`, {
+    const res = await fetch(`http://localhost:5000/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)

@@ -42,7 +42,7 @@ export default function AdminDashboard() {
       };
 
       const usersRes = await fetch(
-        "https://tutoringwebsite-xjj4.onrender.com/api/users/pending",
+        `http://localhost:5000/api/users/pending`,
         { headers }
       );
       if (usersRes.ok) {
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `https://tutoringwebsite-xjj4.onrender.com/api/users/${userId}/approve`,
+        `http://localhost:5000/api/users/${userId}/approve`,
         {
           method: "PATCH",
           headers: {
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `https://tutoringwebsite-xjj4.onrender.com/api/users/${userId}/revoke`,
+        `http://localhost:5000/api/users/${userId}/revoke`,
         {
           method: "PATCH",
           headers: {

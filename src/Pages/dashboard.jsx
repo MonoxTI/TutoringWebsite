@@ -19,7 +19,7 @@ export default function Dashboard() {
       }
 
       // ✅ FIXED: Removed trailing spaces in URL
-      const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/Allappointments", {
+      const res = await fetch(`http://localhost:5000/api/Allappointments`, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
@@ -65,7 +65,7 @@ export default function Dashboard() {
       const token = localStorage.getItem("token");
       
       // ✅ FIXED: Removed trailing spaces in URL
-      const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/deleteAppointments", {
+      const res = await fetch(`http://localhost:5000/api/deleteAppointments`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,
