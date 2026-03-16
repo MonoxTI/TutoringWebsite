@@ -1,6 +1,8 @@
 // Login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import dotenv from "dotenv";
+dotenv.config();
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -24,7 +26,7 @@ const handleSubmit = async (e) => {
   setError("");
 
   try {
-    const res = await fetch("https://tutoringwebsite-xjj4.onrender.com/api/login", {
+    const res = await fetch(`${process.env.API_URL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)
@@ -33,8 +35,8 @@ const handleSubmit = async (e) => {
     const data = await res.json();
     
     // 🔍 ADD THIS DEBUG LOG
-    console.log("📦 Login response:", data);
-    console.log("👤 User role from backend:", data.user?.role);
+    console.log(" Login response:", data);
+    console.log(" User role from backend:", data.user?.role);
 
     if (!res.ok) {
       throw new Error(data.message || "Invalid credentials");
